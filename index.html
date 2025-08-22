@@ -1,520 +1,568 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <title>鍵盤定位板下載區</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: "Microsoft JhengHei", Arial, sans-serif; background:#f5f5f5; margin:0; }
-    header { padding:28px 20px 12px; text-align:center; }
-    h1 { margin:0 0 8px; color:#222; }
-    .hint { color:#666; }
-    .wrap { max-width:960px; margin:16px auto 40px; padding:0 16px; }
-    .toolbar { display:flex; gap:8px; justify-content:center; margin:10px auto 18px; flex-wrap:wrap; }
-    input[type="search"] { width:360px; max-width:90%; padding:10px 12px; border-radius:10px; border:1px solid #ddd; }
-    button { padding:8px 12px; border-radius:8px; border:1px solid #ccc; background:#fff; cursor:pointer; }
-    button:hover { background:#f0f0f0; }
-    .group { background:#fff; border-radius:12px; padding:12px 16px; margin:10px 0; box-shadow:0 2px 10px rgba(0,0,0,.05); }
-    summary { cursor:pointer; font-size:18px; outline:none; }
-    ul { list-style:none; padding-left:0; margin:10px 0 0; }
-    li { margin:6px 0; }
-    a { display:block; padding:10px 12px; border-radius:8px; background:#007acc; color:#fff; text-decoration:none; }
-    a:hover { background:#005fa3; }
-    .muted { color:#888; font-size:12px; text-align:center; margin-top:6px; }
-  </style>
+<meta charset="UTF-8" />
+<title>鍵盤定位板 & VIA JSON 下載</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+:root { --bg:#f5f5f5; --fg:#222; --card:#fff; --muted:#666; --btn:#007acc; --btnh:#005fa3; --bd:#ddd; }
+*{box-sizing:border-box} body{margin:0;font-family:"Microsoft JhengHei",Arial,sans-serif;background:var(--bg);color:var(--fg)}
+header{padding:28px 20px 12px;text-align:center} h1{margin:0 0 8px} .hint{color:var(--muted)}
+.wrap{max-width:960px;margin:16px auto 40px;padding:0 16px}
+.tabs{display:flex;justify-content:center;gap:8px;margin:12px 0 6px;flex-wrap:wrap}
+.tab-btn{padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:#fff;cursor:pointer;min-width:120px}
+.tab-btn.active{background:var(--btn);color:#fff;border-color:var(--btn)}
+.toolbar{display:flex;gap:8px;justify-content:center;margin:10px auto 18px;flex-wrap:wrap}
+input[type="search"]{width:360px;max-width:90%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd)}
+button.ctrl{padding:8px 12px;border-radius:8px;border:1px solid var(--bd);background:#fff;cursor:pointer}
+button.ctrl:hover{background:#f0f0f0}
+.panel{display:none} .panel.active{display:block}
+.group{background:var(--card);border-radius:12px;padding:12px 16px;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+summary{cursor:pointer;font-size:18px;outline:none} ul{list-style:none;padding-left:0;margin:10px 0 0} li{margin:6px 0}
+a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:#fff;text-decoration:none} a:hover{background:var(--btnh)}
+.muted{color:#888;font-size:12px;text-align:center;margin-top:6px}
+</style>
 </head>
 <body>
-  <header>
-    <h1>鍵盤定位板下載區</h1>
-    <div class="hint">以下提供 DXF / DWG 檔案下載；可用關鍵字快速過濾。</div>
-    <div class="toolbar">
-      <input id="q" type="search" placeholder="搜尋型號 / 關鍵字…（例：Unikorn, ARC60, 910, WK）" oninput="filterList()">
-      <button onclick="expandAll(true)">展開全部</button>
-      <button onclick="expandAll(false)">收合全部</button>
-    </div>
-  </header>
+<header>
+  <h1>鍵盤定位板 & VIA JSON 下載</h1>
+  <div class="hint">切換上方分頁；各自支援搜尋 / 展開 / 收合。連結已做 URL 編碼，中文/空白檔名可正常下載。</div>
+  <div class="tabs">
+    <button id="tab-plates-btn" class="tab-btn active" onclick="showTab('plates')">定位板（96）</button>
+    <button id="tab-json-btn"   class="tab-btn"        onclick="showTab('json')">VIA JSON（22）</button>
+  </div>
+</header>
 
-  <div class="wrap" id="wrap">
+<div class="wrap">
+  <div id="panel-plates" class="panel active">
+    <div class="toolbar">
+      <input id="q-plates" type="search" placeholder="搜尋定位板…（例：Unikorn, ARC60, 910, WK）" oninput="filterList('panel-plates','q-plates')">
+      <button class="ctrl" onclick="expandAll('panel-plates',true)">展開全部</button>
+      <button class="ctrl" onclick="expandAll('panel-plates',false)">收合全部</button>
+    </div>
 
   <details class="group" open>
     <summary><strong>959mini</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="959mini.dwg" download>959mini.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/959mini.dwg" download>959mini.dwg</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>Angle65</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Angle65-Alu.dwg" download>Angle65-Alu.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Angle65-Alu.dwg" download>Angle65-Alu.dwg</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>ARC60</strong> <span class="count">(2)</span></summary>
     <ul>
-      <li><a href="ARC60-Alu_Plate.dwg" download>ARC60-Alu_Plate.dwg</a></li>
-      <li><a href="ARC60-half_plate_mod_for_solder_pcb.dxf" download>ARC60-half_plate_mod_for_solder_pcb.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/ARC60-Alu_Plate.dwg" download>ARC60-Alu_Plate.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/ARC60-half_plate_mod_for_solder_pcb.dxf" download>ARC60-half_plate_mod_for_solder_pcb.dxf</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>bakeneko65</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="bakeneko65-plate.dxf" download>bakeneko65-plate.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/bakeneko65-plate.dxf" download>bakeneko65-plate.dxf</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>BD60</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="BD60.dwg" download>BD60.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/BD60.dwg" download>BD60.dwg</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>Cinque原装定位板</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Cinque%E5%8E%9F%E8%A3%85%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Cinque原装定位板.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Cinque%E5%8E%9F%E8%A3%85%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Cinque原装定位板.dwg</a></li>
     </ul>
   </details>
-
   <details class="group" open>
     <summary><strong>Corsa65</strong> <span class="count">(2)</span></summary>
     <ul>
-      <li><a href="Corsa65-Hotswap-NoFlexCut.dxf" download>Corsa65-Hotswap-NoFlexCut.dxf</a></li>
-      <li><a href="Corsa65-Hotswap.dxf" download>Corsa65-Hotswap.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Corsa65-Hotswap-NoFlexCut.dxf" download>Corsa65-Hotswap-NoFlexCut.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Corsa65-Hotswap.dxf" download>Corsa65-Hotswap.dxf</a></li>
     </ul>
   </details>
+  <details class="group" open>
+    <summary><strong>Cycle7</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Cycle7.dxf" download>Cycle7.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>derivative</strong> <span class="count">(4)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/derivative_r1_plate-metal-full-newspec_ansi%28%E7%A1%AC%29.dwg" download>derivative_r1_plate-metal-full-newspec_ansi(硬).dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/derivative_r1_plate-metal-half-newspec_ansi%28%E7%A1%AC%E5%8D%8A%E9%8B%BC%29.dwg" download>derivative_r1_plate-metal-half-newspec_ansi(硬半鋼).dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/derivative_r1_plate-plastic-full-newspec_ansi%28%E8%BB%9F%29.dwg" download>derivative_r1_plate-plastic-full-newspec_ansi(軟).dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/derivative_r1_plate-plastic-half-newspec_ansi%28%E8%BB%9F%E5%8D%8A%E9%8B%BC%29.dwg" download>derivative_r1_plate-plastic-half-newspec_ansi(軟半鋼).dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Dune65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Dune65_full_plate.dwg" download>Dune65_full_plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>EAVE</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/EAVE%20Plate.dwg" download>EAVE Plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Enter67</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Enter67_-.dwg" download>Enter67_-.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Enter67V2</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Enter67V2.dwg" download>Enter67V2.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Envoy65</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Envoy65.dxf" download>Envoy65.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Envoy65_UniversalPlate_05182023.dxf" download>Envoy65_UniversalPlate_05182023.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Frog</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Frog%20mini.dxf" download>Frog mini.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>fuji65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/fuji65.dxf" download>fuji65.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>fuji75</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/fuji75.dxf" download>fuji75.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Fukuro</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Fukuro-Nonleafspring.dxf" download>Fukuro-Nonleafspring.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>gehirn</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/gehirn%20tkl_cut_added.dxf" download>gehirn tkl_cut_added.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>ginkgo65pro</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/ginkgo65pro.dwg" download>ginkgo65pro.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Gok-Venn</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Gok_Venn_Custom_Cut.dwg" download>Gok_Venn_Custom_Cut.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Gok_Venn_half%20plate.dwg" download>Gok_Venn_half plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Harbour</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Harbour-Full_Plate.dxf" download>Harbour-Full_Plate.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>haven65</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/haven65-wk.dwg" download>haven65-wk.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/haven65-wkl.dwg" download>haven65-wkl.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Jane</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Jane_ce.DXF" download>Jane_ce.DXF</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>jh70</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/jh70.dxf" download>jh70.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>JRIS75</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/JRIS75-AluFr4.dwg" download>JRIS75-AluFr4.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/JRIS75-PCPOM.dwg" download>JRIS75-PCPOM.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>KBD8XIII</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/kbd8xiii_%20no%20f.dwg" download>kbd8xiii_ no f.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/kbd8xiii_.dwg" download>kbd8xiii_.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Keycult</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Keycult_no.2_TKL.dxf" download>Keycult_no.2_TKL.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Keycult65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Keycult65%20%E4%BF%AE%E6%94%B9gasket%E8%A8%AD%E8%A8%88%20%E4%BD%ACp%E6%94%B9.dwg" download>Keycult65 修改gasket設計 佬p改.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Kohaku65</strong> <span class="count">(3)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Kohaku65%20Aluminum%20Plate%20Gasket%E8%80%B3%E6%9C%B5%E6%94%B9%E5%85%A9%E8%85%B3%E6%94%AF%E6%92%90%28%E8%BC%83%E8%BB%9F%29.dwg" download>Kohaku65 Aluminum Plate Gasket耳朵改兩腳支撐(較軟).dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Kohaku65%20%E5%88%AA%E9%99%A4%E7%A9%BA%E6%A0%BC%E8%99%95gasket%20%E4%BD%ACP%E6%94%B9.dwg" download>Kohaku65 刪除空格處gasket 佬P改.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Kohaku65%20%E5%A4%A7%E5%AF%A6%E5%BF%83Gasket%E8%80%B3%E6%9C%B5%EF%BC%8C%28%E6%89%8B%E6%84%9F%E8%BC%83%E7%A1%AC%29.dwg" download>Kohaku65 大實心Gasket耳朵，(手感較硬).dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>kv1</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/kv1%20pcb%20mount%20stabs6.25%2B7.dwg" download>kv1 pcb mount stabs6.25+7.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/kv1%20p%E8%A1%9B%20%E9%98%BF%E5%B0%91%E6%94%B9.dxf" download>kv1 p衛 阿少改.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>MACHINA</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/MACHINA_CLOUDNINE_MX_PLATE.DXF" download>MACHINA_CLOUDNINE_MX_PLATE.DXF</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Molly60</strong> <span class="count">(3)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Molly60_Full_Plate.dwg" download>Molly60_Full_Plate.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Molly60_HHKB6U_Plate.dwg" download>Molly60_HHKB6U_Plate.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Molly60_HHKB7U_Plate.dwg" download>Molly60_HHKB7U_Plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>moment</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/moment-full-metal-ansi.dxf" download>moment-full-metal-ansi.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>MR98</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/MR98.dwg" download>MR98.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>NEO60</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Neo60%20Cu%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Neo60 Cu定位板.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>NEO65</strong> <span class="count">(3)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Neo65%20Cu%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Neo65 Cu定位板.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/NEO65-%E9%8B%BC%E6%9D%BF.dxf" download>NEO65-鋼板.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/NEO65.dwg" download>NEO65.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>ORBIT65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/ORBIT65_PLATE%20.dxf" download>ORBIT65_PLATE .dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>ori60</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/ori60%2020250122.dwg" download>ori60 20250122.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Parabolica</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Parabolica_ANSI_%E5%AE%9A%E4%BD%8D%E6%9D%BF.dxf" download>Parabolica_ANSI_定位板.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>qk65v2c</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/qk65v2c_mod.dxf" download>qk65v2c_mod.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Reset75</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Reset75_.dwg" download>Reset75_.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>RIO65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/RIO65%20WK%20.dwg" download>RIO65 WK .dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>rule60v2</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/rule60v2%20%E9%9D%9C%E9%9B%BB%E5%AE%B9.dxf" download>rule60v2 靜電容.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>rule60V3</strong> <span class="count">(3)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/rule60V3%20gastop%20%E9%9D%9C%E9%9B%BB%E5%AE%B9.dwg" download>rule60V3 gastop 靜電容.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/rule60V3%20gastop%E5%94%AF%E4%B8%80%E7%9C%9F%E7%A5%9Ep%E8%A1%9B.dwg" download>rule60V3 gastop唯一真神p衛.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/rule60V3%20%E5%B7%A6%E7%A7%BB64%20p%E8%A1%9B%20GAS.dwg" download>rule60V3 左移64 p衛 GAS.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Shelby65</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Shelby65.dwg" download>Shelby65.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Singa-Unikorn</strong> <span class="count">(12)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Singa-Unikorn-HalfPlate.dxf" download>Singa-Unikorn-HalfPlate.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Singa-Unikorn-%E6%AF%94%E5%9F%BA%E5%B0%BC.dxf" download>Singa-Unikorn-比基尼.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E5%8D%95%E7%8B%AC%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89.dwg" download>unikorn全钢ISO钢卫（单独）（菊ISO）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88back%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89%20.dwg" download>Unikorn全钢ISO钢卫（空格分裂）（Rshift分裂）（back分裂）（菊ISO） .dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89%20.dwg" download>Unikorn全钢ISO钢卫（空格分裂）（Rshift分裂）（菊ISO） .dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%886.25U%EF%BC%89.dwg" download>unikorn全钢钢卫（6.25U）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%887U%EF%BC%89.dwg" download>unikorn全钢钢卫（7U）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89.dwg" download>unikorn全钢钢卫（空格分裂）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89.dwg" download>unikorn全钢钢卫（空格分裂）（Rshift分裂）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Unikorn%E5%8D%8A%E5%89%9Bpcb%E8%A1%9B%E6%98%9F%E8%BB%B8.dwg" download>Unikorn半剛pcb衛星軸.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Unikorn%E5%8D%8A%E9%8B%BCISO%E9%8B%BC%E8%A1%9B%EF%BC%88%E5%96%AE%E7%8D%A8%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89.dwg" download>Unikorn半鋼ISO鋼衛（單獨）（菊ISO）.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/unikorn%E7%8F%88%E8%97%8D%E7%BE%A4%E5%8E%9F%E7%89%88%E5%9C%96%E7%B4%99.dwg" download>unikorn珈藍群原版圖紙.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>SixtyFive2024</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/SixtyFive2024_Plate.dxf" download>SixtyFive2024_Plate.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>SONIC170</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/SONIC170.dwg" download>SONIC170.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Sonnet</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Sonnet-HalfPlate.dxf" download>Sonnet-HalfPlate.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Sonnet_FullPlate.dxf" download>Sonnet_FullPlate.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>story65</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/story65%20p%E8%A1%9B.dxf" download>story65 p衛.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/story65%20%E5%89%9B%E8%A1%9B.dxf" download>story65 剛衛.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>SUIT80</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/SUIT80-FR4.dwg" download>SUIT80-FR4.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>TGR</strong> <span class="count">(4)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/tgr_910_v2_m.dwg" download>tgr_910_v2_m.dwg</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/tgr_910_v2_me.dxf" download>tgr_910_v2_me.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/tgr_jane_v2_me.dxf" download>tgr_jane_v2_me.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/TGR_SHI%20TGR%E7%8D%85%20plate.dwg" download>TGR_SHI TGR獅 plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Think6.5</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Think6.5_v3.dwg" download>Think6.5_v3.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Tomo75</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Tomo75.dxf" download>Tomo75.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>transition</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/transition_lite_plate.dwg" download>transition_lite_plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>V65P衛</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/V65P%E8%A1%9B.dwg" download>V65P衛.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>V75</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/V75%20P%E8%A1%9B.dwg" download>V75 P衛.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>V75P</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/V75P%20half%20plate.dwg" download>V75P half plate.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>V80</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/V80%20P%E8%A1%9B.dwg" download>V80 P衛.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>wooting</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/wooting-in-frog_mini.dxf" download>wooting-in-frog_mini.dxf</a></li>
+    </ul>
+  </details>
+    <div class="muted">定位板總數：96，系列：61</div>
+  </div>
+
+  <div id="panel-json" class="panel">
+    <div class="toolbar">
+      <input id="q-json" type="search" placeholder="搜尋 VIA JSON…（例：Unikorn, 65, ANSI）" oninput="filterList('panel-json','q-json')">
+      <button class="ctrl" onclick="expandAll('panel-json',true)">展開全部</button>
+      <button class="ctrl" onclick="expandAll('panel-json',false)">收合全部</button>
+    </div>
 
   <details class="group" open>
     <summary><strong>Cycle7</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Cycle7.dxf" download>Cycle7.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Cycle7_via.json" download>Cycle7_via.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>derivative</strong> <span class="count">(4)</span></summary>
+    <summary><strong>gtr60.via.v3.options</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="derivative_r1_plate-metal-full-newspec_ansi%28%E7%A1%AC%29.dwg" download>derivative_r1_plate-metal-full-newspec_ansi(硬).dwg</a></li>
-      <li><a href="derivative_r1_plate-metal-half-newspec_ansi%28%E7%A1%AC%E5%8D%8A%E9%8B%BC%29.dwg" download>derivative_r1_plate-metal-half-newspec_ansi(硬半鋼).dwg</a></li>
-      <li><a href="derivative_r1_plate-plastic-full-newspec_ansi%28%E8%BB%9F%29.dwg" download>derivative_r1_plate-plastic-full-newspec_ansi(軟).dwg</a></li>
-      <li><a href="derivative_r1_plate-plastic-half-newspec_ansi%28%E8%BB%9F%E5%8D%8A%E9%8B%BC%29.dwg" download>derivative_r1_plate-plastic-half-newspec_ansi(軟半鋼).dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/gtr60.via.v3.options%20%281%29.json" download>gtr60.via.v3.options (1).json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Dune65</strong> <span class="count">(1)</span></summary>
+    <summary><strong>lucky65</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Dune65_full_plate.dwg" download>Dune65_full_plate.dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/lucky65%20V2.json" download>lucky65 V2.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>EAVE</strong> <span class="count">(1)</span></summary>
+    <summary><strong>neo</strong> <span class="count">(2)</span></summary>
     <ul>
-      <li><a href="EAVE%20Plate.dwg" download>EAVE Plate.dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo_ergo-%E4%B8%89%E6%A8%A1.json" download>neo_ergo-三模.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo_ergo_wired.json" download>neo_ergo_wired.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Enter67</strong> <span class="count">(1)</span></summary>
+    <summary><strong>NEO60</strong> <span class="count">(2)</span></summary>
     <ul>
-      <li><a href="Enter67_-.dwg" download>Enter67_-.dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo60Cu_trimode%E5%90%8Ccore.json" download>Neo60Cu_trimode同core.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo60Cu_wired_%E5%90%8Ccore.json" download>Neo60Cu_wired_同core.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Enter67V2</strong> <span class="count">(1)</span></summary>
+    <summary><strong>NEO65</strong> <span class="count">(7)</span></summary>
     <ul>
-      <li><a href="Enter67V2.dwg" download>Enter67V2.dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo65_ansi._v3.json" download>neo65_ansi._v3.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo65_Core_Plus_%E4%B8%89%E6%A8%A1.json" download>Neo65_Core_Plus_三模.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo65_Cu_wired.json" download>Neo65_Cu_wired.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo65_solder_v3.json" download>neo65_solder_v3.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/NEO65_%E4%B8%89%E6%A8%A1.json" download>NEO65_三模.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo65core_plus_v3.json" download>neo65core_plus_v3.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo65Cu_%E4%B8%89%E6%A8%A1.json" download>Neo65Cu_三模.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Envoy65</strong> <span class="count">(2)</span></summary>
+    <summary><strong>neo70</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Envoy65.dxf" download>Envoy65.dxf</a></li>
-      <li><a href="Envoy65_UniversalPlate_05182023.dxf" download>Envoy65_UniversalPlate_05182023.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo70_ansi_v3.json" download>neo70_ansi_v3.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Frog</strong> <span class="count">(1)</span></summary>
+    <summary><strong>neo75cu</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Frog%20mini.dxf" download>Frog mini.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo75cu-wired.json" download>neo75cu-wired.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>fuji65</strong> <span class="count">(1)</span></summary>
+    <summary><strong>Neo75三模</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="fuji65.dxf" download>fuji65.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Neo75%E4%B8%89%E6%A8%A1.json" download>Neo75三模.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>fuji75</strong> <span class="count">(1)</span></summary>
+    <summary><strong>neo80</strong> <span class="count">(2)</span></summary>
     <ul>
-      <li><a href="fuji75.dxf" download>fuji75.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo80_wired_v3.json" download>neo80_wired_v3.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/neo80_wireless.json" download>neo80_wireless.json</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>Fukuro</strong> <span class="count">(1)</span></summary>
+    <summary><strong>TB65F(三模)(1)</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="Fukuro-Nonleafspring.dxf" download>Fukuro-Nonleafspring.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/TB65F%28%E4%B8%89%E6%A8%A1%29%281%29.JSON" download>TB65F(三模)(1).JSON</a></li>
     </ul>
   </details>
-
   <details class="group" open>
-    <summary><strong>gehirn</strong> <span class="count">(1)</span></summary>
+    <summary><strong>TB65F(单模)</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="gehirn%20tkl_cut_added.dxf" download>gehirn tkl_cut_added.dxf</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/TB65F%28%E5%8D%95%E6%A8%A1%29.JSON" download>TB65F(单模).JSON</a></li>
     </ul>
   </details>
-
-  <details class="group" open>
-    <summary><strong>ginkgo65pro</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="ginkgo65pro.dwg" download>ginkgo65pro.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Gok-Venn</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="Gok_Venn_Custom_Cut.dwg" download>Gok_Venn_Custom_Cut.dwg</a></li>
-      <li><a href="Gok_Venn_half%20plate.dwg" download>Gok_Venn_half plate.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Harbour</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Harbour-Full_Plate.dxf" download>Harbour-Full_Plate.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>haven65</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="haven65-wk.dwg" download>haven65-wk.dwg</a></li>
-      <li><a href="haven65-wkl.dwg" download>haven65-wkl.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Jane</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Jane_ce.DXF" download>Jane_ce.DXF</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>jh70</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="jh70.dxf" download>jh70.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>JRIS75</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="JRIS75-AluFr4.dwg" download>JRIS75-AluFr4.dwg</a></li>
-      <li><a href="JRIS75-PCPOM.dwg" download>JRIS75-PCPOM.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>KBD8XIII</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="kbd8xiii_%20no%20f.dwg" download>kbd8xiii_ no f.dwg</a></li>
-      <li><a href="kbd8xiii_.dwg" download>kbd8xiii_.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Keycult</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Keycult_no.2_TKL.dxf" download>Keycult_no.2_TKL.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Keycult65</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Keycult65%20%E4%BF%AE%E6%94%B9gasket%E8%A8%AD%E8%A8%88%20%E4%BD%ACp%E6%94%B9.dwg" download>Keycult65 修改gasket設計 佬p改.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Kohaku65</strong> <span class="count">(3)</span></summary>
-    <ul>
-      <li><a href="Kohaku65%20Aluminum%20Plate%20Gasket%E8%80%B3%E6%9C%B5%E6%94%B9%E5%85%A9%E8%85%B3%E6%94%AF%E6%92%90%28%E8%BC%83%E8%BB%9F%29.dwg" download>Kohaku65 Aluminum Plate Gasket耳朵改兩腳支撐(較軟).dwg</a></li>
-      <li><a href="Kohaku65%20%E5%88%AA%E9%99%A4%E7%A9%BA%E6%A0%BC%E8%99%95gasket%20%E4%BD%ACP%E6%94%B9.dwg" download>Kohaku65 刪除空格處gasket 佬P改.dwg</a></li>
-      <li><a href="Kohaku65%20%E5%A4%A7%E5%AF%A6%E5%BF%83Gasket%E8%80%B3%E6%9C%B5%EF%BC%8C%28%E6%89%8B%E6%84%9F%E8%BC%83%E7%A1%AC%29.dwg" download>Kohaku65 大實心Gasket耳朵，(手感較硬).dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>kv1</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="kv1%20pcb%20mount%20stabs6.25%2B7.dwg" download>kv1 pcb mount stabs6.25+7.dwg</a></li>
-      <li><a href="kv1%20p%E8%A1%9B%20%E9%98%BF%E5%B0%91%E6%94%B9.dxf" download>kv1 p衛 阿少改.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>MACHINA</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="MACHINA_CLOUDNINE_MX_PLATE.DXF" download>MACHINA_CLOUDNINE_MX_PLATE.DXF</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Molly60</strong> <span class="count">(3)</span></summary>
-    <ul>
-      <li><a href="Molly60_Full_Plate.dwg" download>Molly60_Full_Plate.dwg</a></li>
-      <li><a href="Molly60_HHKB6U_Plate.dwg" download>Molly60_HHKB6U_Plate.dwg</a></li>
-      <li><a href="Molly60_HHKB7U_Plate.dwg" download>Molly60_HHKB7U_Plate.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>moment</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="moment-full-metal-ansi.dxf" download>moment-full-metal-ansi.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>MR98</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="MR98.dwg" download>MR98.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>NEO60</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Neo60%20Cu%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Neo60 Cu定位板.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>NEO65</strong> <span class="count">(3)</span></summary>
-    <ul>
-      <li><a href="Neo65%20Cu%E5%AE%9A%E4%BD%8D%E6%9D%BF.dwg" download>Neo65 Cu定位板.dwg</a></li>
-      <li><a href="NEO65-%E9%8B%BC%E6%9D%BF.dxf" download>NEO65-鋼板.dxf</a></li>
-      <li><a href="NEO65.dwg" download>NEO65.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>ORBIT65</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="ORBIT65_PLATE%20.dxf" download>ORBIT65_PLATE .dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>ori60</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="ori60%2020250122.dwg" download>ori60 20250122.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Parabolica</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Parabolica_ANSI_%E5%AE%9A%E4%BD%8D%E6%9D%BF.dxf" download>Parabolica_ANSI_定位板.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>qk65v2c</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="qk65v2c_mod.dxf" download>qk65v2c_mod.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Reset75</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Reset75_.dwg" download>Reset75_.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>RIO65</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="RIO65%20WK%20.dwg" download>RIO65 WK .dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>rule60v2</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="rule60v2%20%E9%9D%9C%E9%9B%BB%E5%AE%B9.dxf" download>rule60v2 靜電容.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>rule60V3</strong> <span class="count">(3)</span></summary>
-    <ul>
-      <li><a href="rule60V3%20gastop%20%E9%9D%9C%E9%9B%BB%E5%AE%B9.dwg" download>rule60V3 gastop 靜電容.dwg</a></li>
-      <li><a href="rule60V3%20gastop%E5%94%AF%E4%B8%80%E7%9C%9F%E7%A5%9Ep%E8%A1%9B.dwg" download>rule60V3 gastop唯一真神p衛.dwg</a></li>
-      <li><a href="rule60V3%20%E5%B7%A6%E7%A7%BB64%20p%E8%A1%9B%20GAS.dwg" download>rule60V3 左移64 p衛 GAS.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Shelby65</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Shelby65.dwg" download>Shelby65.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Singa-Unikorn</strong> <span class="count">(12)</span></summary>
-    <ul>
-      <li><a href="Singa-Unikorn-HalfPlate.dxf" download>Singa-Unikorn-HalfPlate.dxf</a></li>
-      <li><a href="Singa-Unikorn-%E6%AF%94%E5%9F%BA%E5%B0%BC.dxf" download>Singa-Unikorn-比基尼.dxf</a></li>
-      <li><a href="unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E5%8D%95%E7%8B%AC%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89.dwg" download>unikorn全钢ISO钢卫（单独）（菊ISO）.dwg</a></li>
-      <li><a href="Unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88back%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89%20.dwg" download>Unikorn全钢ISO钢卫（空格分裂）（Rshift分裂）（back分裂）（菊ISO） .dwg</a></li>
-      <li><a href="Unikorn%E5%85%A8%E9%92%A2ISO%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89%20.dwg" download>Unikorn全钢ISO钢卫（空格分裂）（Rshift分裂）（菊ISO） .dwg</a></li>
-      <li><a href="unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%886.25U%EF%BC%89.dwg" download>unikorn全钢钢卫（6.25U）.dwg</a></li>
-      <li><a href="unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%887U%EF%BC%89.dwg" download>unikorn全钢钢卫（7U）.dwg</a></li>
-      <li><a href="unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89.dwg" download>unikorn全钢钢卫（空格分裂）.dwg</a></li>
-      <li><a href="unikorn%E5%85%A8%E9%92%A2%E9%92%A2%E5%8D%AB%EF%BC%88%E7%A9%BA%E6%A0%BC%E5%88%86%E8%A3%82%EF%BC%89%EF%BC%88Rshift%E5%88%86%E8%A3%82%EF%BC%89.dwg" download>unikorn全钢钢卫（空格分裂）（Rshift分裂）.dwg</a></li>
-      <li><a href="Unikorn%E5%8D%8A%E5%89%9Bpcb%E8%A1%9B%E6%98%9F%E8%BB%B8.dwg" download>Unikorn半剛pcb衛星軸.dwg</a></li>
-      <li><a href="Unikorn%E5%8D%8A%E9%8B%BCISO%E9%8B%BC%E8%A1%9B%EF%BC%88%E5%96%AE%E7%8D%A8%EF%BC%89%EF%BC%88%E8%8F%8AISO%EF%BC%89.dwg" download>Unikorn半鋼ISO鋼衛（單獨）（菊ISO）.dwg</a></li>
-      <li><a href="unikorn%E7%8F%88%E8%97%8D%E7%BE%A4%E5%8E%9F%E7%89%88%E5%9C%96%E7%B4%99.dwg" download>unikorn珈藍群原版圖紙.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>SixtyFive2024</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="SixtyFive2024_Plate.dxf" download>SixtyFive2024_Plate.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>SONIC170</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="SONIC170.dwg" download>SONIC170.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Sonnet</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="Sonnet-HalfPlate.dxf" download>Sonnet-HalfPlate.dxf</a></li>
-      <li><a href="Sonnet_FullPlate.dxf" download>Sonnet_FullPlate.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>story65</strong> <span class="count">(2)</span></summary>
-    <ul>
-      <li><a href="story65%20p%E8%A1%9B.dxf" download>story65 p衛.dxf</a></li>
-      <li><a href="story65%20%E5%89%9B%E8%A1%9B.dxf" download>story65 剛衛.dxf</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>SUIT80</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="SUIT80-FR4.dwg" download>SUIT80-FR4.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>TGR</strong> <span class="count">(4)</span></summary>
-    <ul>
-      <li><a href="tgr_910_v2_m.dwg" download>tgr_910_v2_m.dwg</a></li>
-      <li><a href="tgr_910_v2_me.dxf" download>tgr_910_v2_me.dxf</a></li>
-      <li><a href="tgr_jane_v2_me.dxf" download>tgr_jane_v2_me.dxf</a></li>
-      <li><a href="TGR_SHI%20TGR%E7%8D%85%20plate.dwg" download>TGR_SHI TGR獅 plate.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Think6.5</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Think6.5_v3.dwg" download>Think6.5_v3.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>Tomo75</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="Tomo75.dxf" download>Tomo75.dxf</a></li>
-    </ul>
-  </details>
-
   <details class="group" open>
     <summary><strong>transition</strong> <span class="count">(1)</span></summary>
     <ul>
-      <li><a href="transition_lite_plate.dwg" download>transition_lite_plate.dwg</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/transition_lite_7u_json.json" download>transition_lite_7u_json.json</a></li>
     </ul>
   </details>
-
-  <details class="group" open>
-    <summary><strong>V65P衛</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="V65P%E8%A1%9B.dwg" download>V65P衛.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>V75</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="V75%20P%E8%A1%9B.dwg" download>V75 P衛.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>V75P</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="V75P%20half%20plate.dwg" download>V75P half plate.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>V80</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="V80%20P%E8%A1%9B.dwg" download>V80 P衛.dwg</a></li>
-    </ul>
-  </details>
-
-  <details class="group" open>
-    <summary><strong>wooting</strong> <span class="count">(1)</span></summary>
-    <ul>
-      <li><a href="wooting-in-frog_mini.dxf" download>wooting-in-frog_mini.dxf</a></li>
-    </ul>
-  </details>
-
-    <div class="muted">共 96 個檔案，分為 61 個系列。</div>
+    <div class="muted">JSON 總數：22，系列：13</div>
   </div>
+</div>
 
 <script>
-function filterList() {
-  const q = document.getElementById('q').value.trim().toLowerCase();
-  const groups = document.querySelectorAll('.group');
-  groups.forEach(g => {
+function showTab(which) {
+  const isPlates = (which === 'plates');
+  document.getElementById('panel-plates').classList.toggle('active', isPlates);
+  document.getElementById('panel-json').classList.toggle('active', !isPlates);
+  document.getElementById('tab-plates-btn').classList.toggle('active', isPlates);
+  document.getElementById('tab-json-btn').classList.toggle('active', !isPlates);
+}
+function filterList(panelId, inputId) {
+  const q = document.getElementById(inputId).value.trim().toLowerCase();
+  const panel = document.getElementById(panelId);
+  panel.querySelectorAll('.group').forEach(g => {
     const text = g.innerText.toLowerCase();
     const matched = text.includes(q);
     g.style.display = matched ? '' : 'none';
     if (matched && q) g.open = true;
   });
 }
-
-function expandAll(open) {
-  document.querySelectorAll('.group').forEach(g => g.open = open);
+function expandAll(panelId, open) {
+  document.getElementById(panelId).querySelectorAll('.group').forEach(g => g.open = open);
 }
 </script>
 </body>
