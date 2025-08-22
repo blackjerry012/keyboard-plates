@@ -28,8 +28,8 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
   <h1>鍵盤定位板 & VIA JSON 下載</h1>
   <div class="hint">切換上方分頁；各自支援搜尋 / 展開 / 收合。連結已做 URL 編碼，中文/空白檔名可正常下載。</div>
   <div class="tabs">
-    <button id="tab-plates-btn" class="tab-btn active" onclick="showTab('plates')">定位板（96）</button>
-    <button id="tab-json-btn"   class="tab-btn"        onclick="showTab('json')">VIA JSON（22）</button>
+    <button id="tab-plates-btn" class="tab-btn active" onclick="showTab('plates')">定位板（101）</button>
+    <button id="tab-json-btn"   class="tab-btn"        onclick="showTab('json')">VIA JSON（28）</button>
   </div>
 </header>
 
@@ -70,6 +70,20 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
     <summary><strong>BD60</strong> <span class="count">(1)</span></summary>
     <ul>
       <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/BD60.dwg" download>BD60.dwg</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Bias</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Bias%20DE%E5%8E%9F%E7%89%88%E5%AE%9A%E4%BD%8D%E6%9D%BF.dxf" download>Bias DE原版定位板.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Bias%20DE%E6%96%B0%E7%89%88%E5%AE%9A%E4%BD%8D%E6%9D%BF.dxf" download>Bias DE新版定位板.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Capy</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Capy%2060%E5%AE%9A%E4%BD%8D%E6%9D%BF_%E7%A1%AC%E6%9D%90%E8%B4%A8.dxf" download>Capy 60定位板_硬材质.dxf</a></li>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Capy%2060%E5%AE%9A%E4%BD%8D%E6%9D%BF_%E8%BD%AF%E6%9D%90%E8%B4%A8.dxf" download>Capy 60定位板_软材质.dxf</a></li>
     </ul>
   </details>
   <details class="group" open>
@@ -373,6 +387,12 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
     </ul>
   </details>
   <details class="group" open>
+    <summary><strong>Spyder</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/Spyder%20TKL%20%E5%AE%9A%E4%BD%8D%E6%9D%BF.dxf" download>Spyder TKL 定位板.dxf</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
     <summary><strong>story65</strong> <span class="count">(2)</span></summary>
     <ul>
       <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/story65%20p%E8%A1%9B.dxf" download>story65 p衛.dxf</a></li>
@@ -442,7 +462,7 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
       <li><a href="%E5%AE%9A%E4%BD%8D%E6%9D%BF/wooting-in-frog_mini.dxf" download>wooting-in-frog_mini.dxf</a></li>
     </ul>
   </details>
-    <div class="muted">定位板總數：96，系列：61</div>
+    <div class="muted">定位板總數：101，系列：64</div>
   </div>
 
   <div id="panel-json" class="panel">
@@ -452,6 +472,12 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
       <button class="ctrl" onclick="expandAll('panel-json',false)">收合全部</button>
     </div>
 
+  <details class="group" open>
+    <summary><strong>capy60</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="via%E6%AA%94%E6%A1%88/capy60.json" download>capy60.json</a></li>
+    </ul>
+  </details>
   <details class="group" open>
     <summary><strong>Cycle7</strong> <span class="count">(1)</span></summary>
     <ul>
@@ -522,6 +548,19 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
     </ul>
   </details>
   <details class="group" open>
+    <summary><strong>Pangea</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="via%E6%AA%94%E6%A1%88/Pangea_Hotswap_VIA.json" download>Pangea_Hotswap_VIA.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/Pangea_Solder_VIA.json" download>Pangea_Solder_VIA.json</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
+    <summary><strong>Spyder</strong> <span class="count">(1)</span></summary>
+    <ul>
+      <li><a href="via%E6%AA%94%E6%A1%88/Spyder_TKL_VIA.json" download>Spyder_TKL_VIA.json</a></li>
+    </ul>
+  </details>
+  <details class="group" open>
     <summary><strong>TB65F(三模)(1)</strong> <span class="count">(1)</span></summary>
     <ul>
       <li><a href="via%E6%AA%94%E6%A1%88/TB65F%28%E4%B8%89%E6%A8%A1%29%281%29.JSON" download>TB65F(三模)(1).JSON</a></li>
@@ -539,7 +578,14 @@ a{display:block;padding:10px 12px;border-radius:8px;background:var(--btn);color:
       <li><a href="via%E6%AA%94%E6%A1%88/transition_lite_7u_json.json" download>transition_lite_7u_json.json</a></li>
     </ul>
   </details>
-    <div class="muted">JSON 總數：22，系列：13</div>
+  <details class="group" open>
+    <summary><strong>VOID65</strong> <span class="count">(2)</span></summary>
+    <ul>
+      <li><a href="via%E6%AA%94%E6%A1%88/VOID65%20%E7%83%AD%E6%8F%92%E6%8B%94_VIA.json" download>VOID65 热插拔_VIA.json</a></li>
+      <li><a href="via%E6%AA%94%E6%A1%88/VOID65%20%E7%84%8A%E6%8E%A5_VIA.json" download>VOID65 焊接_VIA.json</a></li>
+    </ul>
+  </details>
+    <div class="muted">JSON 總數：28，系列：17</div>
   </div>
 </div>
 
